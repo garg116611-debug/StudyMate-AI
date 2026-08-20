@@ -1,7 +1,6 @@
 # ============================================
-# Streamlit App - PDF Study Assistant
-# Author: Prateek Kumar Kuntal
-# Day 56 - 66 Days GenAI Challenge
+# StudyMate AI - College Notes Assistant
+# RAG-Based Document Question Answering
 # ============================================
 
 import sys
@@ -13,10 +12,10 @@ from chatbot import PDFStudyAssistant
 
 # ── Page config ───────────────────────────────────────────────────────
 st.set_page_config(
-    page_title = "PDF Study Assistant",
-    page_icon  = "📚",
-    layout     = "wide",
-)
+    page_title="StudyMate AI",
+    page_icon="📚",
+    layout="wide",
+)   
 
 # ── Custom CSS ────────────────────────────────────────────────────────
 st.markdown("""
@@ -55,14 +54,20 @@ assistant = st.session_state.assistant
 
 
 # ── Header ────────────────────────────────────────────────────────────
-st.markdown('<div class="main-header">📚 PDF Study Assistant</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-header">Day 56 · 66 Days GenAI Challenge · by Prateek Kumar Kuntal</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="main-header">📚 StudyMate AI</div>',
+    unsafe_allow_html=True
+)
+st.markdown(
+    '<div class="sub-header">AI-Powered College Notes Assistant using RAG</div>',
+    unsafe_allow_html=True
+)
 st.divider()
 
 
 # ── Sidebar ───────────────────────────────────────────────────────────
 with st.sidebar:
-    st.header("📂 Upload Documents")
+    st.header("📄 Documents")
 
     uploaded_files = st.file_uploader(
         "Upload PDF or TXT files",
@@ -87,6 +92,46 @@ with st.sidebar:
 
     st.divider()
 
+    st.subheader("📝 Quiz Generator")
+
+num_questions = st.slider(
+    "Number of questions",
+    min_value=3,
+    max_value=10,
+    value=5
+)
+
+difficulty = st.selectbox(
+    "Difficulty",
+    ["Easy", "Medium", "Hard"]
+)
+
+if st.button("📝 Generate Quiz"):
+
+    if st.session_state.assistant.is_ready:
+
+        with st.spinner("Generating quiz from your document..."):
+
+            quiz = st.session_state.assistant.generate_quiz(
+                num_questions=num_questions,
+                difficulty=difficulty
+            )
+
+        st.session_state.quiz = quiz
+
+    else:
+
+        st.warning("Please upload a document first.")
+
+
+    if "quiz" in st.session_state:
+
+        st.divider()
+
+        st.subheader("📝 Your AI-Generated Quiz")
+
+        st.markdown(st.session_state.quiz)
+    
     # ── Loaded files ──────────────────────────────────────────────────
     if st.session_state.files_loaded:
         st.subheader("📄 Loaded Files")
@@ -110,7 +155,7 @@ with st.sidebar:
         st.divider()
 
     # ── Actions ───────────────────────────────────────────────────────
-    st.subheader("⚙️ Actions")
+    st.subheader("📝 Study Tools")
 
     if st.button("📝 Summarise Documents", use_container_width=True):
         if st.session_state.assistant.is_ready:
@@ -159,6 +204,13 @@ with col_chat:
                     st.markdown(f"**Sources:** {src_text}", unsafe_allow_html=True)
 
     # Chat input
+    if "summary" in st.session_state:
+
+        st.divider()
+
+        st.subheader("📋 Document Summary")
+
+        st.markdown(st.session_state.summary)
     if prompt := st.chat_input(
         "Ask anything about your document...",
         disabled=not st.session_state.assistant.is_ready,
@@ -187,20 +239,42 @@ with col_chat:
 with col_info:
     st.subheader("💡 Tips")
     st.markdown("""
-**Ask questions like:**
-- What is this document about?
-- Summarise chapter 3
-- Explain the concept of X
+**💬 Ask questions**
+- What is this topic about?
+- Explain this concept in simple language.
 - What are the key points?
-- Give me examples of Y
+- Explain this with an example.
 
-**Supports:**
-- 📄 PDF files
-- 📝 TXT files
-- 📚 Multiple files at once
+**📝 Study Tools**
+- Generate an AI quiz from your notes.
+- Choose quiz difficulty and number of questions.
+- Generate a concise document summary.
 
-**Powered by:**
-- 🤖 Google Gemini 2.5 Flash
-- 🔍 FAISS vector search
-- 🧠 HuggingFace embeddings
+**📚 Supported**
+- PDF files
+- TXT files
+- Multiple documents
+- Page-level source citations
+
+**⚙️ Powered by**
+- Google Gemini
+- LangChain
+- FAISS
+- HuggingFace Embeddings
 """)
+
+    st.sidebar.markdown("### 📋 Study Tools")
+
+    if st.sidebar.button("📋 Generate Summary"):
+
+        if st.session_state.assistant.is_ready:
+
+            with st.spinner("Generating summary..."):
+
+                summary = st.session_state.assistant.get_document_summary()
+
+        st.session_state.summary = summary
+
+    else:
+
+        st.warning("Please upload a document first.")

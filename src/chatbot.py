@@ -96,6 +96,31 @@ class PDFStudyAssistant:
         self.processor.loaded_files = []
         self.is_ready = False
 
+    def generate_quiz(
+    self,
+    num_questions: int = 5,
+    difficulty: str = "Medium"
+    ) -> str:
+
+        if not self.is_ready:
+            return "⚠️ Please upload a document first."
+
+    # Retrieve important content from the uploaded documents
+        docs = self.vs.search(
+        "important concepts topics key definitions main ideas",
+        top_k=10
+        )
+
+        if not docs:
+            return "No relevant document content found."
+
+    # Send retrieved chunks to the RAG engine
+        return self.rag.generate_quiz(
+        docs,
+        num_questions=num_questions,
+        difficulty=difficulty
+    )
+
     def get_stats(self) -> Dict:
         return {
             "is_ready"    : self.is_ready,

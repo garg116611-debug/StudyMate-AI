@@ -9,7 +9,7 @@ load_dotenv(_project_root / ".env")
 
 # ── Google Gemini ─────────────────────────────
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
-LLM_MODEL = "gemini-2.5-flash"   # updated model name
+LLM_MODEL = "gemini-3.6-flash"   # updated model name
 
 # ── Embeddings (free, local) ──────────────────
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
