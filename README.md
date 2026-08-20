@@ -55,7 +55,8 @@ The system retrieves relevant information from uploaded documents using semantic
                     ▼
             Generated Response
 
-##📂 Project Structure
+## 📂 Project Structure
+
 StudyMate-AI/
 │
 ├── src/
@@ -72,7 +73,8 @@ StudyMate-AI/
 ├── .gitignore
 └── README.md
 
-##🔧 Tech Stack
+## 🔧 Tech Stack
+
 Technology	    Purpose
 Python	        Core programming language
 Streamlit	    Web interface
@@ -82,7 +84,8 @@ HuggingFace	    Text embeddings
 Google Gemini	Answer and content generation
 PyPDF	        PDF document processing
 
-##🔄 How RAG Works
+## 🔄 How RAG Works
+
 1. Document Upload
 
 The user uploads a PDF or TXT document.
@@ -109,7 +112,8 @@ The retrieved chunks are provided as context to Google Gemini, which generates t
 
 This helps the assistant answer using information from the uploaded documents instead of relying only on general model knowledge.
 
-##📝 Custom Features
+## 📝 Custom Features
+
 Page-Level Source Citations
 
 Answers include the source document and page number of the retrieved content.
@@ -138,7 +142,8 @@ AI Document Summary
 
 The application can generate a concise summary of important concepts from the uploaded study material.
 
-##🎯 Project Goal
+## 🎯 Project Goal
+
 The project is designed as a lightweight AI study assistant for college students. It demonstrates the practical implementation of a RAG pipeline using document processing, embeddings, vector search, and an LLM.
 
 ##📌 Future Improvements
@@ -149,7 +154,9 @@ User authentication
 Improved retrieval and reranking
 Deployment on a cloud platform
 
-##🙌 Attribution
+## 🙌 Attribution
+
+
 This project was customized and extended from the original
-AI-PDF-Study-Assistant.
+https://github.com/Prateek234775/AI-PDF-Study-Assistant?utm_source=chatgpt.com.
 
